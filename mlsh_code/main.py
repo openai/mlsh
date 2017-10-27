@@ -20,7 +20,6 @@ from mpi4py import MPI
 from rl_algs.common import set_global_seeds, tf_util as U
 import os.path as osp
 import gym, logging
-from tinkerbell import logger, misc
 import numpy as np
 from collections import deque
 from gym import spaces
@@ -57,8 +56,8 @@ LOGDIR = osp.join('/root/results' if sys.platform.startswith('linux') else '/tmp
 def callback(it):
     if MPI.COMM_WORLD.Get_rank()==0:
         if it % 5 == 0 and it > 3 and not replay:
-            fname = osp.join(logger.get_dir(), 'checkpoints', '%.5i'%it)
-            logger.log('Saving model to %s'%fname)
+            fname = osp.join("savedir/", 'checkpoints', '%.5i'%it)
+            # logger.log('Saving model to %s'%fname)
             U.save_state(fname)
     if it == 0 and args.continue_iter is not None:
         fname = osp.join(""+args.savename+"/checkpoints/", str(args.continue_iter))
@@ -82,9 +81,9 @@ def train():
     rank = MPI.COMM_WORLD.Get_rank()
     set_global_seeds(workerseed)
 
-    if rank != 0:
-        logger.set_level(logger.DISABLED)
-    logger.log("rank %i" % MPI.COMM_WORLD.Get_rank())
+    # if rank != 0:
+    #     logger.set_level(logger.DISABLED)
+    # logger.log("rank %i" % MPI.COMM_WORLD.Get_rank())
 
     world_group = MPI.COMM_WORLD.Get_group()
     mygroup = rank % 10
@@ -99,8 +98,8 @@ def main():
     if MPI.COMM_WORLD.Get_rank() == 0 and osp.exists(LOGDIR):
         shutil.rmtree(LOGDIR)
     MPI.COMM_WORLD.Barrier()
-    with logger.session(dir=LOGDIR):
-        train()
+    # with logger.session(dir=LOGDIR):
+    train()
 
 if __name__ == '__main__':
     main()

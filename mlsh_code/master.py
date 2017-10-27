@@ -8,7 +8,7 @@ from observation_network import Features
 from learner import Learner
 import rl_algs.common.tf_util as U
 import numpy as np
-from tinkerbell import logger
+# from tinkerbell import logger
 import pickle
 
 def start(callback, args, workerseed, rank, comm):
@@ -55,7 +55,7 @@ def start(callback, args, workerseed, rank, comm):
         shared_goal = comm.bcast(env.env.realgoal, root=0)
         env.env.realgoal = shared_goal
 
-        logger.log("It is iteration %d so i'm changing the goal to %s" % (x, env.env.realgoal))
+        print("It is iteration %d so i'm changing the goal to %s" % (x, env.env.realgoal))
         mini_ep = 0 if x > 0 else -1 * (rank % 10)*int(warmup_time+train_time / 10)
         # mini_ep = 0
 
@@ -74,7 +74,7 @@ def start(callback, args, workerseed, rank, comm):
             learner.updateSubPolicies(test_seg, num_batches, (mini_ep >= warmup_time))
             # learner.updateSubPolicies(test_seg,
             # log
-            logger.log(("%d: global: %s, local: %s" % (mini_ep, gmean, lmean)))
+            print(("%d: global: %s, local: %s" % (mini_ep, gmean, lmean)))
             if args.s:
                 totalmeans.append(gmean)
                 with open('outfile'+str(x)+'.pickle', 'wb') as fp:
