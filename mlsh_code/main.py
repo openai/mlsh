@@ -42,33 +42,15 @@ args.replay = str2bool(args.replay)
 
 RELPATH = osp.join(args.savename)
 LOGDIR = osp.join('/root/results' if sys.platform.startswith('linux') else '/tmp', RELPATH)
-# def callback(it):
-#     if it >= 1:
-#         fname = osp.join("/Users/kevin/data/tinkerbell/gce/"+args.savename+"/checkpoints/", format(it*5, '05d'))
-#         U.load_state(fname)
-#     else:
-#         fname = osp.join("/Users/kevin/data/tinkerbell/gce/"+args.savename+"/checkpoints/", "00005")
-#         subvars = []
-#         for i in range(args.num_subs):
-#             subvars += tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope="sub_policy_%i" % i)
-#         U.load_state(fname, subvars)
 
 def callback(it):
     if MPI.COMM_WORLD.Get_rank()==0:
         if it % 5 == 0 and it > 3 and not replay:
             fname = osp.join("savedir/", 'checkpoints', '%.5i'%it)
-            # logger.log('Saving model to %s'%fname)
             U.save_state(fname)
     if it == 0 and args.continue_iter is not None:
-        fname = osp.join(""+args.savename+"/checkpoints/", str(args.continue_iter))
+        fname = osp.join("savedir/"+args.savename+"/checkpoints/", str(args.continue_iter))
         U.load_state(fname)
-
-        # fname = osp.join(""+args.savename+"/checkpoints/", args.continue_iter)
-        # subvars = []
-        # for i in range(args.num_subs-1):
-        #     subvars += tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope="sub_policy_%i" % (i+1))
-        # print([v.name for v in subvars])
-        # U.load_state(fname, subvars)
         pass
 
 def train():
