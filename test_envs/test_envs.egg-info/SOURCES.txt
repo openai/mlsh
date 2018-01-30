@@ -1,5 +1,0 @@
-test_envs.egg-info/PKG-INFO
-test_envs.egg-info/SOURCES.txt
-test_envs.egg-info/dependency_links.txt
-test_envs.egg-info/requires.txt
-test_envs.egg-info/top_level.txt
