@@ -1,3 +1,4 @@
+from collections import defaultdict
 import numpy as np
 
 class TabularQAgent(object):
