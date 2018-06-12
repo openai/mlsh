@@ -3,13 +3,12 @@ import numpy as np
 import os
 import random as _random
 import struct
-import sys
 
 from gym import error
 
-if sys.version_info < (3,):
+try:
     integer_types = (int, long)
-else:
+except NameError:
     integer_types = (int,)
 
 # Fortunately not needed right now!
