@@ -6,7 +6,7 @@ setup(name='rl-algs',
           'scipy',
           'tqdm',
           'joblib',
-      ]
+      ],
       description="OpenAI baselines: high quality implementations of reinforcement learning algorithms",
       author="OpenAI",
 )
